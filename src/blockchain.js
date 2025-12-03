@@ -14,6 +14,16 @@ class Blockchain {
     this.chain.push(minedBlock);
   }
 
+  replaceChain(newchain) {
+  
+    if (this.chain.length > newchain.length) return ;
+
+    if (! Blockchain.isValidChain(newchain)) return;
+
+    this.chain = newchain;
+
+  }
+
   static isValidChain(chain) {
     if (chain.length == 0) return false;
 
