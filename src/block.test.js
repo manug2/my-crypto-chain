@@ -56,6 +56,10 @@ describe ('Block', () => {
       expect(minedBlock.lastHash).toEqual(lastBlock.hash);
     });
     
+    it('mined block has hash based on appropriate inputs', ()=> {
+      expect(minedBlock.hash).toEqual(cryptoHash(minedBlock.timestamp, data, lastBlock.hash));
+    });
+    
   });
 
 });
