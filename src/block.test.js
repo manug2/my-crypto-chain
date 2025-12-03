@@ -1,5 +1,6 @@
 const Block = require('./block');
 const { GENESIS_DATA } = require('./config')
+const cryptoHash = require('./crypto-hash')
 
 describe ('Block', () => {
 
@@ -17,22 +18,44 @@ describe ('Block', () => {
         expect(block.timestamp).toEqual(timestamp);
     });
 
-});
 
-describe ('genesis()', () => {
-  const genesisBlock = Block.genesis();
+  describe ('genesis()', () => {
+    const genesisBlock = Block.genesis();
 
-  it('genesis block is valid', () => {
-    expect(genesisBlock instanceof Block).toBe(true);
+    it('genesis block is valid', () => {
+      expect(genesisBlock instanceof Block).toBe(true);
+    });
+
+    it('genesis block data is valid', () => {
+      expect(genesisBlock).toEqual(GENESIS_DATA);
+    });
+
+    it('genesis block has properties', () => {
+      expect(genesisBlock.hash).toEqual('abcdefgh');
+      expect(genesisBlock.lastHash).toEqual('------');
+    });
+
   });
 
-  it('genesis block data is valid', () => {
-    expect(genesisBlock).toEqual(GENESIS_DATA);
-  });
+  describe('mineBlock()', () => {
 
-  it('genesis block has properties', () => {
-    expect(genesisBlock.hash).toEqual('abcdefgh');
-    expect(genesisBlock.lastHash).toEqual('------');
+    const lastBlock = Block.genesis();
+    const data = 'second block data';
+    
+    const minedBlock = Block.mineBlock({ data, lastBlock });
+    
+    it('returns a Block instance', ()=> {
+      expect(minedBlock instanceof Block).toBe(true);
+    });
+    
+    it('sets a `timestamp`', ()=> {
+      expect(minedBlock.timestamp).not.toBe(undefined);
+    });
+    
+    it('sets `lashHash` to be `hash` of the lastBlock', ()=> {
+      expect(minedBlock.lastHash).toEqual(lastBlock.hash);
+    });
+    
   });
 
 });
