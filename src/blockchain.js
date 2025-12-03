@@ -24,17 +24,20 @@ class Blockchain {
     if (chain[0].lastHash != genesis.lastHash) return false;
     if (chain[0].data != genesis.data) return false;
     
+    if (JSON.stringify(chain[0]) !== JSON.stringify(genesis)) return false;
+
     let curr = 1;
     while (curr < chain.length) {
       
-      const currBlock = chain[curr];
-      const lastBlock = chain[curr-1];
-      
-      if (lastBlock.hash != currBlock.lastHash) return false;
+      const { timestamp, lastHash, hash, data } = chain[curr];
 
-      const expectedHash = cryptoHash(currBlock.timestamp, currBlock.data, lastBlock.hash);
+      const actualLastHash = chain[curr-1].hash;
 
-      if (currBlock.hash != expectedHash) return false;
+      if (actualLastHash != lastHash) return false;
+
+      const expectedHash = cryptoHash(timestamp, data, actualLastHash);
+
+      if (hash != expectedHash) return false;
 
       curr ++;
     }
