@@ -1,5 +1,5 @@
 const MINE_RATE = 1000; // per second
-const INITIAL_DIFFICULTY = 2;
+const INITIAL_DIFFICULTY = 3;
 
 GENESIS_DATA = {
   timestamp: 1000,

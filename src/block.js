@@ -18,9 +18,10 @@ class Block {
 
   static mineBlock({ data, lastBlock }) {
 
-    lastHash = lastBlock.hash;
+    const lastHash = lastBlock.hash;
     let nonce = 0;
     let expectedDifficultyPrefix;
+    let timestamp, hash, difficulty;
 
     do {
       timestamp = Date.now();
@@ -30,8 +31,9 @@ class Block {
       expectedDifficultyPrefix = '0'.repeat(difficulty);
 
       hash = cryptoHash(timestamp, data, lastHash, nonce, difficulty);
-      substr = hash.substring(0, difficulty);
-    } while (substr != expectedDifficultyPrefix);
+      let substr = hash.substring(0, difficulty);
+      if (substr == expectedDifficultyPrefix) break;
+    } while (true);
 
     return new Block({
       timestamp,

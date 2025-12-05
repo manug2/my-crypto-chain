@@ -9,9 +9,9 @@ class Blockchain {
   }
 
   addBlock ({ data }) {
-    lastBlock = this.chain[this.chain.length-1];
-    difficulty = lastBlock.difficulty;
-    minedBlock = Block.mineBlock({ data, lastBlock, difficulty });
+    const lastBlock = this.chain[this.chain.length-1];
+    const difficulty = lastBlock.difficulty;
+    const minedBlock = Block.mineBlock({ data, lastBlock, difficulty });
     this.chain.push(minedBlock);
   }
 
