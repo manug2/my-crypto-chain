@@ -8,14 +8,18 @@ describe ('Block', () => {
     const lastHash = 'last-hash-value';
     const data = 'block-data-goes-here';
     const hash = 'a-hash-value';
+    const nonce = 1;
+    const difficulty = 1;
 
-    const block = new Block({ timestamp, lastHash, data, hash });
+    const block = new Block({ timestamp, lastHash, data, hash, nonce, difficulty });
 
     it('has properties data, hash', () => {
         expect(block.hash).toEqual(hash);
         expect(block.data).toEqual(data);
         expect(block.lastHash).toEqual(lastHash);
         expect(block.timestamp).toEqual(timestamp);
+        expect(block.nonce).toEqual(nonce);
+        expect(block.difficulty).toEqual(difficulty);
     });
 
 
@@ -42,7 +46,7 @@ describe ('Block', () => {
     const lastBlock = Block.genesis();
     const data = 'second block data';
     
-    const minedBlock = Block.mineBlock({ data, lastBlock });
+    const minedBlock = Block.mineBlock({ data, lastBlock, difficulty: lastBlock.difficulty });
     
     it('returns a Block instance', ()=> {
       expect(minedBlock instanceof Block).toBe(true);
@@ -57,7 +61,22 @@ describe ('Block', () => {
     });
     
     it('mined block has hash based on appropriate inputs', ()=> {
-      expect(minedBlock.hash).toEqual(cryptoHash(minedBlock.timestamp, data, lastBlock.hash));
+      expect(minedBlock.hash)
+        .toEqual(
+          cryptoHash(
+            minedBlock.timestamp,
+            minedBlock.nonce,
+            minedBlock.difficulty,
+            data,
+            lastBlock.hash
+          ));
+    });
+
+    it('sets a `hash` that matches the difficulty criteria', () => {
+      const actual = minedBlock.hash.substring(0, minedBlock.difficulty);
+      const expected = '0'.repeat(minedBlock.difficulty);
+      //console.log('difficulty', minedBlock.difficulty, '\nactual', actual, '\nexpected', expected);
+      expect(actual).toEqual(expected);
     });
     
   });
