@@ -36,7 +36,7 @@ class Transaction {
     static validateTransaction(transaction) {
 
         const { input: { address, amount, signature }, outputMap } = transaction;
-        const outputTotal = Object.valivalues(outputMap)
+        const outputTotal = Object.values(outputMap)
             .reduce((total, outputAmount) => total + outputAmount);
 
         if (amount !== outputTotal) {
