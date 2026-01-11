@@ -1,9 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
-const Block = require('./src/block');
+const Block = require('./src/blockchain/block');
 const Blockchain = require('./src/blockchain');
-const PubSub = require('./src/pubsub');
+const PubSub = require('./src/app/pubsub');
 
 const app = express();
 const blockchain = new Blockchain();
@@ -20,6 +20,9 @@ app.get('/api/blocks', (req, res) => {
 });
 
 app.post('/api/mine', (req, res) => {
+  // Example curl command:
+  // curl localhost:3000/api/mine --data '{ "data": "foo-bar2" }' -X POST -H "Content-Type: application/json"
+
   const { data } = req.body;
 
   blockchain.addBlock({ data });
