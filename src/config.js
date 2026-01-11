@@ -13,5 +13,5 @@ GENESIS_DATA = {
 };
 
 
-module.exports = { GENESIS_DATA, MINE_RATE }
+module.exports = { GENESIS_DATA, MINE_RATE, STARTING_BALANCE }
 
